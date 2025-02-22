@@ -1,0 +1,26 @@
+name: Linting
+
+# This workflow will run the linting checks as defined in the
+# pre-commit-config.yaml
+# Should any fail, the github check will fail.
+# e.g if the requirements.txt doesn't match the exported version it'll fail
+
+on:
+  push:
+    branches: develop
+  pull_request:
+
+jobs:
+  checks:
+    name: "pre-commit hooks"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+      # required for the poetry export requirements check
+      - name: Install Poetry
+        run: |
+          pip install poetry
+      - uses: pre-commit/action@v2.0.0
